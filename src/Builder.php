@@ -315,13 +315,13 @@ class Builder implements BuilderInterface
         imagefill($image, 0, 0, $backgroundColor);
 
         //绘制背景干扰线
-        $this->drawBehindLine($image);
+        $this->drawLines($image, $this->config['maxBehindLines']);
 
         //写入验证码文字
         $color = $this->renderText($image, $code, $font);
 
         //绘制前景干扰线
-        $this->drawFrontLine($image, $color);
+        $this->drawLines($image, $this->config['maxFrontLines'], $color);
 
 
         if ($this->config['distortion']) {
@@ -435,46 +435,32 @@ class Builder implements BuilderInterface
     }
 
     /**
-     * 绘制背景线
+     * 画线
      * @param $image
-     */
-    protected function drawBehindLine($image)
-    {
-        $square = $this->config['width'] * $this->config['height'];
-        $effects = mt_rand($square / 3000, $square / 2000);
-        // 计算线条数
-        if ($this->config['maxBehindLines'] != null && $this->config['maxBehindLines'] > 0) {
-            $effects = min($this->config['maxBehindLines'], $effects);
-        }
-
-        if ($this->config['maxBehindLines'] !== 0) {
-            for ($e = 0; $e < $effects; $e++) {
-                $this->renderLine($image, $this->config['width'], $this->config['height']);
-            }
-        }
-    }
-
-    /**
-     * 绘制前景线
-     * @param $image
+     * @param $max
      * @param $color
      */
-    protected function drawFrontLine($image, $color)
+    protected function drawLines($image, $max, $color = null)
     {
         $square = $this->config['width'] * $this->config['height'];
         $effects = mt_rand($square / 3000, $square / 2000);
 
         // 计算线条数
-        if ($this->config['maxFrontLines'] != null && $this->config['maxFrontLines'] > 0) {
-            $effects = min($this->config['maxFrontLines'], $effects);
+        if ($max != null && $max > 0) {
+            $effects = min($max, $effects);
         }
 
-        if ($this->config['maxFrontLines'] !== 0) {
+        if ($max !== 0) {
             for ($e = 0; $e < $effects; $e++) {
-                $this->renderLine($image, $this->config['width'], $this->config['height'], $color);
+
+                if ($color) {
+                    $this->renderLine($image, $this->config['width'], $this->config['height'], $color);
+                } else {
+                    $this->renderLine($image, $this->config['width'], $this->config['height']);
+                }
+
             }
         }
-
     }
 
     /**
