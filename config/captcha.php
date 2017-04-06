@@ -1,11 +1,15 @@
 <?php
 /**
- * 验证码配置
- * @Author vicens<vicens@linjianxiaoxi.com>
- * @Date  2016-03-10 22:49
+ * @desc 验证码配置
+ * @author vicens<vicens@linjianxiaoxi.com>
  */
 
 return array(
+    /**
+     * 验证码的访问路径
+     * @var string
+     */
+    'path' => '/captcha',
     /**
      * 默认验证码长度
      * @var int
@@ -60,5 +64,10 @@ return array(
      * 文字最大偏移量
      * @var int
      */
-    'maxOffset' => 5
+    'maxOffset' => 5,
+    /**
+     * 图片质量
+     * @var int
+     */
+    'quality' => 90
 );

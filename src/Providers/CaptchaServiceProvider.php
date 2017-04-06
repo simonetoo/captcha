@@ -1,13 +1,15 @@
 <?php
 /**
- * laravel 服务提供者
- * @Author vicens<vicens@linjianxiaoxi.com>
- * @Date  2016-03-10 22:48
+ * @desc laravel 服务提供者
+ * @author vicens<vicens@linjianxiaoxi.com>
  */
+
 
 namespace Vicens\Captcha\Providers;
 
-use Vicens\Captcha\Builder;
+use Illuminate\Validation\Validator;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Vicens\Captcha\Captcha;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -34,17 +36,16 @@ class CaptchaServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
         //合并配置项
-        $this->mergeConfigFrom(
-            __DIR__ . '/../../config/captcha.php', 'captcha'
-        );
+        $this->mergeConfigFrom(__DIR__ . '/../../config/captcha.php', 'captcha');
 
         //注册到容器中
         $this->app->singleton('captcha', function () {
 
             $config = config('captcha', array());
 
-            return new Builder($config);
+            return new Captcha(new Session(), $config);
 
         });
     }
