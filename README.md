@@ -57,9 +57,7 @@ protected $routeMiddleware = [
 
 ## Configuration
 
-
 ## Usage
-
 
 ## License
 
