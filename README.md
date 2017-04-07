@@ -1,11 +1,11 @@
-<center>
+
 [![Build Status](https://scrutinizer-ci.com/g/vicens/captcha/badges/build.png?b=master)](https://scrutinizer-ci.com/g/vicens/captcha/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vicens/captcha/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/vicens/captcha/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/vicens/captcha/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/vicens/captcha/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/vicens/captcha/v/stable)](https://packagist.org/packages/vicens/captcha)
 [![Total Downloads](https://poser.pugx.org/vicens/captcha/downloads)](https://packagist.org/packages/vicens/captcha)
 [![License](https://poser.pugx.org/vicens/captcha/license)](https://packagist.org/packages/vicens/captcha)
-</center>
+
 ## Introduction
 
 An captcha component for laravel5 applications.
