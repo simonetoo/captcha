@@ -457,7 +457,7 @@ class Captcha
         if ($max !== 0) {
             for ($e = 0; $e < $effects; $e++) {
 
-                if ($color) {
+                if ($color !== null) {
                     $this->renderLine($image, $this->getConfig('width'), $this->getConfig('height'), $color);
                 } else {
                     $this->renderLine($image, $this->getConfig('width'), $this->getConfig('height'));
