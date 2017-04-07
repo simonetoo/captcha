@@ -1,14 +1,11 @@
 <?php
 /**
- * @desc laravel 服务提供者
- * @author vicens<vicens@linjianxiaoxi.com>
+ * @description 服务提供者
+ * @author vicens <vicens.shi@qq.com>
  */
-
 
 namespace Vicens\Captcha\Providers;
 
-use Illuminate\Validation\Validator;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Vicens\Captcha\Captcha;
 
 use Illuminate\Support\ServiceProvider;
@@ -21,11 +18,10 @@ class CaptchaServiceProvider extends ServiceProvider
      */
     protected $defer = true;
 
-    /**
-     *
-     */
+
     public function boot()
     {
+        // 发布配置文件
         $this->publishes([
             __DIR__ . '/../../config/captcha.php' => config_path('captcha.php')
         ], 'config');
@@ -45,13 +41,14 @@ class CaptchaServiceProvider extends ServiceProvider
 
             $config = config('captcha', array());
 
-            return new Captcha(new Session(), $config);
+            return new Captcha($config);
 
         });
     }
 
     /**
      * 延迟加载的服务
+     *
      * @return array
      */
     public function provides()

@@ -1,20 +1,20 @@
 <?php
 /**
- * @desc 验证码配置
- * @author vicens<vicens@linjianxiaoxi.com>
+ * @description 验证码配置
+ * @author vicens <vicens.shi@qq.com>
  */
 
 return array(
-    /**
-     * 验证码的访问路径
-     * @var string
-     */
-    'path' => '/captcha',
     /**
      * 默认验证码长度
      * @var int
      */
     'length' => 4,
+    /**
+     * 验证码字符集
+     * @var string
+     */
+    'charset' => 'abcdefghijklmnpqrstuvwxyz123456789',
     /**
      * 默认验证码宽度
      * @var int
@@ -64,10 +64,5 @@ return array(
      * 文字最大偏移量
      * @var int
      */
-    'maxOffset' => 5,
-    /**
-     * 图片质量
-     * @var int
-     */
-    'quality' => 90
+    'maxOffset' => 5
 );

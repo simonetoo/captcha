@@ -1,13 +1,11 @@
 <?php
 /**
- * @desc laravel 门面
- * @author vicens<vicens@linjianxiaoxi.com>
+ * @description laravel 门面
+ * @author vicens <vicens.shi@qq.com>
  */
-
 
 namespace Vicens\Captcha\Facades;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\HtmlString;
 
@@ -23,57 +21,47 @@ class Captcha extends Facade
 
     /**
      * 生成验证码图片标签
-     * @param string $name
+     *
      * @return string
      */
-    public static function image($name = null)
+    public static function image()
     {
-        return new HtmlString('<img src="' . self::src($name) . '" alt="captcha"/>');
+        return new HtmlString('<img src="' . self::src() . '" alt="captcha"/>');
     }
 
     /**
      * 获取图片验证码的URL
-     * @param null $name
+     *
      * @return string
      */
-    public static function src($name = null)
+    public static function src()
     {
-        return self::url($name);
+        return self::url();
     }
 
     /**
      * 生成验证码路由
+     *
      * @param string $path
      */
-    public static function routes($path = null)
+    public static function routes($path = '/captcha')
     {
-        if (!$path) {
-            $path = config('captcha.path');
-        }
 
-        app('router')->get($path, function (Request $request) {
+        app('router')->get($path, function () {
 
-            $name = $request->get('name');
-
-            return app('captcha')->make($name)->response();
+            return app('captcha')->make()->response();
 
         })->name('captcha');
     }
 
     /**
      * 返回验证码的URL
-     * @param string $name
+     *
      * @return string
      */
-    public static function url($name = null)
+    public static function url()
     {
-        $parameters = [];
-
-        if ($name) {
-            $parameters['name'] = $name;
-        }
-
-        return route('captcha', $parameters);
+        return route('captcha');
     }
 
     /**
@@ -81,10 +69,10 @@ class Captcha extends Facade
      */
     public static function validations()
     {
-        // Validator extensions
-        app('validator')->extend('captcha', function ($attribute, $value, array $parameters = []) {
 
-            return app('captcha')->check($value, array_first($parameters));
+        app('validator')->extend('captcha', function ($attribute, $value) {
+
+            return app('captcha')->check($value);
         });
 
     }

@@ -1,7 +1,7 @@
 <?php
 /**
- * @desc 验证码异常类
- * @author vicens<vicens@linjianxiaoxi.com>
+ * @description 验证码异常类
+ * @author vicens <vicens.shi@qq.com>
  */
 
 
