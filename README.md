@@ -1,4 +1,5 @@
 
+## Introduction
 
 An captcha component for laravel5 applications.
 
@@ -14,13 +15,8 @@ install captcha via composer
 ```php
 composer require vicens/captcha
 ```
-remove
 
-```php
-composer remove vicens/captcha
-```
-
-Register the service provider in the providers array of your `config/app.php` configuration file:
+Next,register the service provider in the providers array of your `config/app.php` configuration file:
 
 ```php
 'providers' => [
@@ -29,7 +25,7 @@ Register the service provider in the providers array of your `config/app.php` co
 ]
 ```
 
-Also, add the `Captcha` facade to the aliases array in your `config/app.php` configuration file:
+Also, add the `Captcha` facade to the aliases array:
 
 ```php
 'aliases' => [
@@ -44,7 +40,7 @@ If you are going to use Captcha's default routes,you should call the `Captcha::r
 Captcha::routes($path = '/captcha');
 ```
 
-Captcha provides a helpful validation rules,if you need it,you can register validation within the `boot` method of you `AppServiceProvider`:
+Captcha provides a helpful validation rules,if you need it,you can register validation within the `boot` method of your `AppServiceProvider`:
 
 ```php
 Captcha::validations();
@@ -58,3 +54,10 @@ protected $routeMiddleware = [
        'captcha' => Vicens\Captcha\Middleware\CaptchaValidate::class
     ];
 ```
+## Configuration
+
+## Usage
+
+## License
+
+Captcha is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
