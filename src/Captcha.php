@@ -27,7 +27,15 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class Captcha
 {
+    /**
+     * 存储在session中的key
+     */
+    const NAME = 'captcha';
 
+    /**
+     * 验证码配置
+     * @var array
+     */
     protected $config = [
         /**
          * 默认验证码长度
@@ -98,14 +106,10 @@ class Captcha
     protected $store;
 
 
-    public function __construct(array $config = [], Session $store = null)
+    public function __construct(array $config = [])
     {
 
-        if ($store === null) {
-            $store = new Session();
-        }
-
-        $this->store = $store;
+        $this->store = new Session();
 
         $this->setConfig($config);
     }
@@ -157,11 +161,15 @@ class Captcha
 
         $code = $this->generate();
 
-        $this->store($code);
+        $hash = password_hash($code, PASSWORD_BCRYPT, array('cost' => 10));
 
-        $image = $this->build($code);
+        if ($hash === false) {
+            throw new \RuntimeException('Bcrypt hashing not supported.');
+        }
 
-        return new Image($image);
+        $this->store->set(self::NAME, $hash);
+
+        return new Image($this->build($code));
     }
 
     /**
@@ -173,12 +181,12 @@ class Captcha
     public function test($input)
     {
 
-        if (!($this->has() && $input)) {
+        if (!($this->store->has(self::NAME) && $input)) {
             return false;
         }
 
         //返回验证结果
-        return password_verify(strtolower($input), $this->get());
+        return password_verify(strtolower($input), $this->store->get(self::NAME));
     }
 
     /**
@@ -191,7 +199,7 @@ class Captcha
     {
         $result = $this->test($input);
 
-        $this->remove();
+        $this->store->remove(self::NAME);
 
         return $result;
     }
@@ -211,76 +219,9 @@ class Captcha
             $code .= $characters[rand(0, count($characters) - 1)];
         }
 
-        return $code;
+        return strtolower($code);
     }
 
-
-    /**
-     * 加密字符串
-     *
-     * @param string $value
-     * @return bool|string
-     */
-    protected function hash($value)
-    {
-        $hash = password_hash($value, PASSWORD_BCRYPT, array('cost' => 10));
-
-        if ($hash === false) {
-            throw new \RuntimeException('Bcrypt hashing not supported.');
-        }
-
-        return $hash;
-    }
-
-    /**
-     * 返回存储到session中的键全名
-     *
-     * @return string
-     */
-    protected function getStoreName()
-    {
-        return 'captcha';
-    }
-
-    /**
-     * 是否有存储的验证码
-     *
-     * @return bool
-     */
-    protected function has()
-    {
-        return $this->store->has($this->getStoreName());
-    }
-
-    /**
-     * 存储验证码
-     *
-     * @param $code
-     */
-    protected function store($code)
-    {
-        $this->store->set($this->getStoreName(), $this->hash(strtolower($code)));
-    }
-
-    /**
-     * 从存储中获取验证码
-     *
-     * @return mixed
-     */
-    protected function get()
-    {
-        return $this->store->get($this->getStoreName());
-    }
-
-    /**
-     * 从存储中删除验证码
-     *
-     * @return mixed
-     */
-    protected function remove()
-    {
-        return $this->store->remove($this->getStoreName());
-    }
 
     /**
      * 创建验证码图片
@@ -325,8 +266,42 @@ class Captcha
 
 
         if ($this->getConfig('distortion')) {
+
             //创建失真
-            $image = $this->distort($image, $width, $height, $backgroundColor);
+            $contents = imagecreatetruecolor($width, $height);
+            $X = mt_rand(0, $width);
+            $Y = mt_rand(0, $height);
+            $phase = mt_rand(0, 10);
+            $scale = 1.1 + mt_rand(0, 10000) / 30000;
+
+            for ($x = 0; $x < $width; $x++) {
+                for ($y = 0; $y < $height; $y++) {
+                    $Vx = $x - $X;
+                    $Vy = $y - $Y;
+                    $Vn = sqrt($Vx * $Vx + $Vy * $Vy);
+
+                    if ($Vn != 0) {
+                        $Vn2 = $Vn + 4 * sin($Vn / 30);
+                        $nX = $X + ($Vx * $Vn2 / $Vn);
+                        $nY = $Y + ($Vy * $Vn2 / $Vn);
+                    } else {
+                        $nX = $X;
+                        $nY = $Y;
+                    }
+                    $nY = $nY + $scale * sin($phase + $nX * 0.2);
+
+                    $p = $this->getColor($image, round($nX), round($nY), $backgroundColor);
+
+                    if ($p == 0) {
+                        $p = $backgroundColor;
+                    }
+
+                    imagesetpixel($contents, $x, $y, $p);
+                }
+            }
+
+
+            $image = $contents;
         }
 
         //如果不指定字体颜色和背景颜色,则使用图像过滤器修饰
@@ -465,51 +440,6 @@ class Captcha
 
             }
         }
-    }
-
-    /**
-     * 创建失真
-     *
-     * @param resource $image
-     * @param int $width
-     * @param int $height
-     * @param int $bg
-     * @return resource
-     */
-    protected function distort($image, $width, $height, $bg)
-    {
-        $contents = imagecreatetruecolor($width, $height);
-        $X = mt_rand(0, $width);
-        $Y = mt_rand(0, $height);
-        $phase = mt_rand(0, 10);
-        $scale = 1.1 + mt_rand(0, 10000) / 30000;
-        for ($x = 0; $x < $width; $x++) {
-            for ($y = 0; $y < $height; $y++) {
-                $Vx = $x - $X;
-                $Vy = $y - $Y;
-                $Vn = sqrt($Vx * $Vx + $Vy * $Vy);
-
-                if ($Vn != 0) {
-                    $Vn2 = $Vn + 4 * sin($Vn / 30);
-                    $nX = $X + ($Vx * $Vn2 / $Vn);
-                    $nY = $Y + ($Vy * $Vn2 / $Vn);
-                } else {
-                    $nX = $X;
-                    $nY = $Y;
-                }
-                $nY = $nY + $scale * sin($phase + $nX * 0.2);
-
-                $p = $this->getColor($image, round($nX), round($nY), $bg);
-
-                if ($p == 0) {
-                    $p = $bg;
-                }
-
-                imagesetpixel($contents, $x, $y, $p);
-            }
-        }
-
-        return $contents;
     }
 
     /**
