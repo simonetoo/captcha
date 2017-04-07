@@ -266,42 +266,8 @@ class Captcha
 
 
         if ($this->getConfig('distortion')) {
-
-            //创建失真
-            $contents = imagecreatetruecolor($width, $height);
-            $X = mt_rand(0, $width);
-            $Y = mt_rand(0, $height);
-            $phase = mt_rand(0, 10);
-            $scale = 1.1 + mt_rand(0, 10000) / 30000;
-
-            for ($x = 0; $x < $width; $x++) {
-                for ($y = 0; $y < $height; $y++) {
-                    $Vx = $x - $X;
-                    $Vy = $y - $Y;
-                    $Vn = sqrt($Vx * $Vx + $Vy * $Vy);
-
-                    if ($Vn != 0) {
-                        $Vn2 = $Vn + 4 * sin($Vn / 30);
-                        $nX = $X + ($Vx * $Vn2 / $Vn);
-                        $nY = $Y + ($Vy * $Vn2 / $Vn);
-                    } else {
-                        $nX = $X;
-                        $nY = $Y;
-                    }
-                    $nY = $nY + $scale * sin($phase + $nX * 0.2);
-
-                    $p = $this->getColor($image, round($nX), round($nY), $backgroundColor);
-
-                    if ($p == 0) {
-                        $p = $backgroundColor;
-                    }
-
-                    imagesetpixel($contents, $x, $y, $p);
-                }
-            }
-
-
-            $image = $contents;
+            // 创建失真
+            $image = $this->createDistortion($image, $width, $height, $backgroundColor);
         }
 
         //如果不指定字体颜色和背景颜色,则使用图像过滤器修饰
@@ -323,6 +289,54 @@ class Captcha
             }
         }
         return $image;
+    }
+
+    /**
+     * 创建失真
+     *
+     * @param resource $image
+     * @param int $width
+     * @param int $height
+     * @param int $backgroundColor
+     * @return resource
+     */
+    protected function createDistortion($image, $width, $height, $backgroundColor)
+    {
+        //创建失真
+        $contents = imagecreatetruecolor($width, $height);
+        $X = mt_rand(0, $width);
+        $Y = mt_rand(0, $height);
+        $phase = mt_rand(0, 10);
+        $scale = 1.1 + mt_rand(0, 10000) / 30000;
+
+        for ($x = 0; $x < $width; $x++) {
+            for ($y = 0; $y < $height; $y++) {
+                $Vx = $x - $X;
+                $Vy = $y - $Y;
+                $Vn = sqrt($Vx * $Vx + $Vy * $Vy);
+
+                if ($Vn != 0) {
+                    $Vn2 = $Vn + 4 * sin($Vn / 30);
+                    $nX = $X + ($Vx * $Vn2 / $Vn);
+                    $nY = $Y + ($Vy * $Vn2 / $Vn);
+                } else {
+                    $nX = $X;
+                    $nY = $Y;
+                }
+                $nY = $nY + $scale * sin($phase + $nX * 0.2);
+
+                $p = $this->getColor($image, round($nX), round($nY), $backgroundColor);
+
+                if ($p == 0) {
+                    $p = $backgroundColor;
+                }
+
+                imagesetpixel($contents, $x, $y, $p);
+            }
+        }
+
+
+        return $contents;
     }
 
     /**
