@@ -54,9 +54,12 @@ protected $routeMiddleware = [
        'captcha' => Vicens\Captcha\Middleware\CaptchaValidate::class
     ];
 ```
+
 ## Configuration
 
+
 ## Usage
+
 
 ## License
 
