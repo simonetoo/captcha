@@ -10,13 +10,13 @@ An captcha component for laravel5 applications.
 
 ## Installation
 
-install captcha via composer
+Install captcha via composer.
 
 ```php
 composer require vicens/captcha
 ```
 
-Next,register the service provider in the providers array of your `config/app.php` configuration file:
+Next, register the service provider in the providers array of your `config/app.php` configuration file:
 
 ```php
 'providers' => [
@@ -34,19 +34,19 @@ Also, add the `Captcha` facade to the aliases array:
 ]
 ```
 
-If you are going to use Captcha's default routes,you should call the `Captcha::routes` method within the `routes/web.php` or `boot` method of your  `AppServiceProvider`:
+If you are going to use Captcha's default routes, you should call the `Captcha::routes` method within the `routes/web.php` or `boot` method of your  `AppServiceProvider`:
 
 ```php
 Captcha::routes($path = '/captcha');
 ```
 
-Captcha provides a helpful validation rules,if you need it,you can register validation within the `boot` method of your `AppServiceProvider`:
+Captcha provides a helpful validation rules, if you need it, you can register validation within the `boot` method of your `AppServiceProvider`:
 
 ```php
 Captcha::validations();
 ```
 
-You can also use the Captcha's middleware in your routes,so you need register middleware to the `$routeMiddleware` array in `app/Http/Kernel.php`:
+You can also use the Captcha's middleware in your routes. So you need register middleware to the `$routeMiddleware` array in `app/Http/Kernel.php`:
 
 ```php
 protected $routeMiddleware = [
