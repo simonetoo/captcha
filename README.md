@@ -7,7 +7,7 @@
 
 ## Introduction
 
-An captcha component for laravel5 applications.
+A simple captcha component for laravel5 applications.
 
 ## Requirements
 1. PHP >= 5.5
