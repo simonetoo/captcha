@@ -17,7 +17,8 @@
     "require": {
         "php": ">=5.5",
         "ext-gd": "*",
-        "symfony/http-foundation": ">=2.0"
+        "symfony/http-foundation": ">=2.0",
+        "laravel/framework":"^5.1"
     },
     "license": "MIT",
     "support": {
