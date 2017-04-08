@@ -1,6 +1,6 @@
 {
     "name": "vicens/captcha",
-    "description": "An captcha component for laravel5 applications.",
+    "description": "A simple captcha component for laravel5 applications.",
     "authors": [
         {
             "name": "Vicens",
