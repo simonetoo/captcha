@@ -12,6 +12,7 @@ An captcha component for laravel5 applications.
 ## Requirements
 1. PHP >= 5.5
 2. php-gd
+3. laravel/framework >= 5.1
 3. symfony/http-foundation >= 2.0
 
 ## Installation
@@ -63,7 +64,179 @@ protected $routeMiddleware = [
 
 ## Configuration
 
-## Usage
+If you would like to use your own settings, you may publish Captcha's config using the `vendor:publish` Artisan command. The published config will be placed in  `config/captcha.php`:
+
+```php
+php artisan vendor:publish
+```
+
+```php
+return array(
+    /**
+     * 默认验证码长度
+     * @var int
+     */
+    'length' => 4,
+    /**
+     * 验证码字符集
+     * @var string
+     */
+    'charset' => 'abcdefghijklmnpqrstuvwxyz123456789',
+    /**
+     * 默认验证码宽度
+     * @var int
+     */
+    'width' => 150,
+    /**
+     * 默认验证码高度
+     * @var int
+     */
+    'height' => 40,
+    /**
+     * 指定文字颜色
+     * @var string
+     */
+    // 'textColor' => null,
+    /**
+     * 文字字体文件
+     * @var string
+     */
+    // 'textFont' => null,
+    /**
+     * 指定图片背景色
+     * @var string
+     */
+    // 'backgroundColor' => null,
+    /**
+     * 开启失真模式
+     * @var bool
+     */
+    'distortion' => true,
+    /**
+     * 最大前景线条数
+     * @var int
+     */
+    // 'maxFrontLines' => null,
+    /**
+     * 最大背景线条数
+     * @val int
+     */
+    // 'maxBehindLines' => null,
+    /**
+     * 文字最大角度
+     * @var int
+     */
+    'maxAngle' => 8,
+    /**
+     * 文字最大偏移量
+     * @var int
+     */
+    'maxOffset' => 5
+);
+```
+
+## Basic Usage
+
+#### Make captcha's image:
+
+```php
+$image = Captcha::make();
+$image = Captcha::setConfig($config)->make();
+$image = Captcha::width(100)->height(40)->make();
+```
+#### Image:
+Return Symfony\Component\HttpFoundation\Response:
+```php
+$image->response();
+```
+Output to browser:
+```php
+$image->output();
+```
+Return image tag:
+```php
+Captcha::html($width, $height);
+```
+Return base64 encode:
+```php
+$image->getBase64();
+```
+Return base64 image Url:
+```php
+$image->getDataUrl();
+```
+Return image content:
+```php
+$image->getContent();
+```
+Save the image:
+```php
+$image->save($filename);
+```
+
+#### Check and test:
+Only test
+```php
+Captcha::test($input);
+```
+Check input and remove the code from store
+```php
+Captcha::check($input);
+```
+
+#### Using the middleware:
+
+Using in routes:
+
+```php
+Route::post('login','LoginController@login')->middleware('captcha');
+```
+
+Using in controllers:
+```php
+public function __constructor(){
+   $this->middleware('captcha');
+}
+```
+
+#### Using the validation:
+
+In controllers:
+
+```php
+$this->validation([
+   'code'=>'captcha'
+]);
+```
+In Requests:
+ ```php
+public function rules()
+{
+    return [
+        'code' => 'captcha'
+    ];
+}
+```
+
+#### Facade methods:
+
+Return url:
+```php
+Captcha::url();
+Captcha::src();
+```
+Return html:
+```php
+Captcha::image();
+```
+Register routes:
+```php
+Captcha::routes();
+```
+Register validations:
+```php
+Captcha::validations();
+```
 
 ## License
 
