@@ -5,25 +5,29 @@
 [![Total Downloads](https://poser.pugx.org/vicens/captcha/downloads)](https://packagist.org/packages/vicens/captcha)
 [![License](https://poser.pugx.org/vicens/captcha/license)](https://packagist.org/packages/vicens/captcha)
 
-## Introduction
+## 简介
 
-A simple captcha component for laravel5 applications.
+一个简单的laravel5图形验证码扩展包
 
-## Requirements
+## 环境要求
 1. PHP >= 5.5
 2. php-gd
 3. laravel/framework >= 5.1
 3. symfony/http-foundation >= 2.0
 
-## Installation
+## 安装
 
-Install captcha via composer.
+### 使用composer安装扩展包
+
+先通过`composer`安装扩展包到项目中
 
 ```php
 composer require vicens/captcha
 ```
 
-Next, register the service provider in the providers array of your `config/app.php` configuration file:
+### 注册服务提供者和别名(Laravel5.5无需手动注册)
+
+在`config/app.php` 配置文件的`providers`数组中，注册服务提供者：
 
 ```php
 'providers' => [
@@ -32,7 +36,7 @@ Next, register the service provider in the providers array of your `config/app.p
 ]
 ```
 
-Also, add the `Captcha` facade to the aliases array:
+如果你使用`Captcha`别名的话，在`aliases`数组中注册别名：
 
 ```php
 'aliases' => [
@@ -41,20 +45,20 @@ Also, add the `Captcha` facade to the aliases array:
 ]
 ```
 
-If you are going to use Captcha's default routes, you should call the `Captcha::routes` method within the `routes/web.php` or `boot` method of your  `AppServiceProvider`:
+### 注册路由、验证器和路由中间件
+
+如果你希望使用`Captcha`的默认路由，你需要在`routes/web.php`或者`AppServiceProvider`的`boot`方法中调用`Captcha::routes`方法：
 
 ```php
 Captcha::routes($path = '/captcha');
 ```
-
-Captcha provides a helpful validation rules, if you need it, you can register validation within the `boot` method of your `AppServiceProvider`:
+`Captcha`提供了一个有用的表单验证器，你可以在`AppServiceProvider`的`boot`方法中注册验证器：
 
 ```php
 Captcha::validations();
 ```
 
-You can also use the Captcha's middleware in your routes. So you need register middleware to the `$routeMiddleware` array in `app/Http/Kernel.php`:
-
+`Captcha`还提供了一个路由中间件，你可以在`app/Http/Kernel.php`的`$routeMiddleware`数组中注册它：
 ```php
 protected $routeMiddleware = [
        // Other middlewares
@@ -62,12 +66,12 @@ protected $routeMiddleware = [
     ];
 ```
 
-## Configuration
+## 配置
 
-If you would like to use your own settings, you may publish Captcha's config using the `vendor:publish` Artisan command. The published config will be placed in  `config/captcha.php`:
+如果你想使用自己的配置,你可以执行以下命令发布配置文件`config/captcha.php`：
 
 ```php
-php artisan vendor:publish
+php artisan vendor:publish --provider=Vicens\Captcha\Providers\CaptchaServiceProvider
 ```
 
 ```php
@@ -135,80 +139,80 @@ return array(
 );
 ```
 
-## Basic Usage
+## 基本用法
 
-#### Make captcha's image:
+#### 生成验证码图片实例
 
 ```php
 $image = Captcha::make();
 $image = Captcha::setConfig($config)->make();
 $image = Captcha::width(100)->height(40)->make();
 ```
-#### Image:
-Return Symfony\Component\HttpFoundation\Response:
+#### 图片实例用法
+直接返回`Response`对象：
 ```php
 $image->response();
 ```
-Output to browser:
+直接输出给浏览器：
 ```php
 $image->output();
 ```
-Return image tag:
+输出`img`标签：
 ```php
 Captcha::html($width, $height);
 ```
-Return base64 encode:
+返回`base64`编码：
 ```php
 $image->getBase64();
 ```
-Return base64 image Url:
+返回`base64`Url地址：
 ```php
 $image->getDataUrl();
 ```
-Return image content:
+返回图片二进制内容：
 ```php
 $image->getContent();
 ```
-Save the image:
+保存图片到服务器：
 ```php
 $image->save($filename);
 ```
 
-#### Check and test:
-Only test
+#### 验证和测试
+仅测试验证码的正确性：
 ```php
 Captcha::test($input);
 ```
-Check input and remove the code from store
+检测验证码的正确性，并且从缓存中删除验证码：
 ```php
 Captcha::check($input);
 ```
 
-#### Using the middleware:
+#### 使用中间件
 
-Using in routes:
+在路由上使用：
 
 ```php
 Route::post('login','LoginController@login')->middleware('captcha');
 ```
 
-Using in controllers:
+在控制器中使用：
 ```php
 public function __constructor(){
    $this->middleware('captcha');
 }
 ```
 
-#### Using the validation:
+#### 使用表单验证器
 
-In controllers:
+在控制器中使用：
 
 ```php
 $this->validation([
    'code'=>'captcha'
 ]);
 ```
-In Requests:
+在`Request`中使用：
  ```php
 public function rules()
 {
@@ -218,26 +222,26 @@ public function rules()
 }
 ```
 
-#### Facade methods:
+#### 外观方法
 
-Return url:
+返回URL：
 ```php
 Captcha::url();
 Captcha::src();
 ```
-Return html:
+返回`img`标签：
 ```php
 Captcha::image();
 ```
-Register routes:
+注册路由：
 ```php
 Captcha::routes();
 ```
-Register validations:
+注册表单验证器：
 ```php
 Captcha::validations();
 ```
 
-## License
+## 开源协议
 
-Captcha is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+[MIT license](http://opensource.org/licenses/MIT).

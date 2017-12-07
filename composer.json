@@ -1,34 +1,41 @@
 {
-    "name": "vicens/captcha",
-    "description": "A simple captcha component for laravel5 applications.",
-    "authors": [
-        {
-            "name": "Vicens",
-            "email": "vicens.shi@qq.com"
-        }
-    ],
-    "keywords": [
-        "captcha",
-        "laravel",
-        "laravel5",
-        "verify Code",
-        "verification Code"
-    ],
-    "require": {
-        "php": ">=5.5",
-        "ext-gd": "*",
-        "symfony/http-foundation": ">=2.0",
-        "laravel/framework":"^5.1"
-    },
-    "license": "MIT",
-    "support": {
-        "email": "vicens.shi@qq.com",
-        "github": "https://github.com/vicens/captcha",
-        "issues": "https://github.com/vicens/captcha/issues"
-    },
-    "autoload": {
-        "psr-4": {
-            "Vicens\\Captcha\\": "src/"
-        }
+  "name": "vicens/captcha",
+  "description": "一个简单的laravel5图形验证码扩展包",
+  "authors": [
+    {
+      "name": "vicens",
+      "email": "521287718@qq.com"
     }
+  ],
+  "keywords": [
+    "captcha",
+    "laravel",
+    "laravel5",
+    "verification Code",
+    "验证码"
+  ],
+  "require": {
+    "php": ">=5.5",
+    "ext-gd": "*",
+    "symfony/http-foundation": ">=2.0",
+    "laravel/framework": "^5.*"
+  },
+  "license": "MIT",
+  "support": {
+    "email": "521287718@qq.com",
+    "github": "https://github.com/vicens/captcha",
+    "issues": "https://github.com/vicens/captcha/issues"
+  },
+  "autoload": {
+    "psr-4": {
+      "Vicens\\Captcha\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Vicens\\Captcha\\Providers\\CaptchaServiceProvider"
+      ]
+    }
+  }
 }
