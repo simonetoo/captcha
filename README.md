@@ -12,7 +12,7 @@
 ## 环境要求
 1. PHP >= 5.5
 2. php-gd
-3. laravel/framework >= 5.1
+3. laravel/container ~5.1
 3. symfony/http-foundation >= 2.0
 
 ## 安装
