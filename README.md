@@ -32,7 +32,7 @@ composer require vicens/captcha
 ```php
 'providers' => [
     // Other service providers...
-    Vicens\Captcha\Providers\CaptchaServiceProvider::class
+    \Vicens\Captcha\Providers\CaptchaServiceProvider::class
 ]
 ```
 
@@ -41,7 +41,7 @@ composer require vicens/captcha
 ```php
 'aliases' => [
     // Other facades...
-    'Captcha' => Vicens\Captcha\Facades\Captcha::class
+    'Captcha' => \Vicens\Captcha\Facades\Captcha::class
 ]
 ```
 
@@ -62,7 +62,7 @@ Captcha::validations();
 ```php
 protected $routeMiddleware = [
        // Other middlewares
-       'captcha' => Vicens\Captcha\Middleware\CaptchaValidate::class
+       'captcha' => \Vicens\Captcha\Middleware\CaptchaValidate::class
     ];
 ```
 
@@ -71,7 +71,7 @@ protected $routeMiddleware = [
 如果你想使用自己的配置,你可以执行以下命令发布配置文件`config/captcha.php`：
 
 ```php
-php artisan vendor:publish --provider=Vicens\Captcha\Providers\CaptchaServiceProvider
+php artisan vendor:publish --provider=\Vicens\Captcha\Providers\CaptchaServiceProvider
 ```
 
 ```php
