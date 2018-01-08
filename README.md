@@ -50,12 +50,12 @@ composer require vicens/captcha
 如果你希望使用`Captcha`的默认路由，你需要在`routes/web.php`或者`AppServiceProvider`的`boot`方法中调用`Captcha::routes`方法：
 
 ```php
-Captcha::routes($path = '/captcha');
+\Vicens\Captcha\Facades\Captcha::routes($path = '/captcha');
 ```
 `Captcha`提供了一个有用的表单验证器，你可以在`AppServiceProvider`的`boot`方法中注册验证器：
 
 ```php
-Captcha::validations();
+\Vicens\Captcha\Facades\Captcha::validations();
 ```
 
 `Captcha`还提供了一个路由中间件，你可以在`app/Http/Kernel.php`的`$routeMiddleware`数组中注册它：
@@ -144,6 +144,8 @@ return array(
 #### 生成验证码图片实例
 
 ```php
+use \Vicens\Captcha\Facades\Captcha;
+
 $image = Captcha::make();
 $image = Captcha::setConfig($config)->make();
 $image = Captcha::width(100)->height(40)->make();
