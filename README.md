@@ -12,8 +12,8 @@
 ## 环境要求
 1. PHP >= 5.5
 2. php-gd
-3. laravel/support ~5.1
-3. symfony/http-foundation >= 2.0
+3. [illuminate\support](https://github.com/illuminate/support) ^5.1
+4. [symfony/http-foundation](https://github.com/symfony/http-foundation) >= 2.0
 
 ## 安装
 
