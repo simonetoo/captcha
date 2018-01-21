@@ -132,7 +132,6 @@ class Captcha
      */
     public function make()
     {
-
         $code = $this->generate();
 
         $hash = password_hash($code, PASSWORD_BCRYPT, array('cost' => 10));
@@ -173,7 +172,6 @@ class Captcha
     public function check($input)
     {
         $result = $this->test($input);
-
         Session::forget(self::SESSION_NAME);
 
         return $result;
@@ -197,7 +195,6 @@ class Captcha
         return strtolower($code);
     }
 
-
     /**
      * 创建验证码图片
      *
@@ -213,7 +210,6 @@ class Captcha
         $height = $this->getConfig('height');
         // 背景颜色
         $backgroundColor = $this->getConfig('backgroundColor');
-
 
         // 随机取一个字体
         $font = $this->getTextFont();
@@ -238,7 +234,6 @@ class Captcha
 
         // 绘制前景干扰线
         $this->drawLines($image, $this->getConfig('maxFrontLines'), $color);
-
 
         if ($this->getConfig('distortion')) {
             // 创建失真
@@ -286,14 +281,14 @@ class Captcha
 
         for ($x = 0; $x < $width; $x++) {
             for ($y = 0; $y < $height; $y++) {
-                $Vx = $x - $rWidth;
-                $Vy = $y - $rHeight;
-                $Vn = sqrt($Vx * $Vx + $Vy * $Vy);
+                $vX = $x - $rWidth;
+                $vY = $y - $rHeight;
+                $vN = sqrt($vX * $vX + $vY * $vY);
 
-                if ($Vn != 0) {
-                    $Vn2 = $Vn + 4 * sin($Vn / 30);
-                    $nX = $rWidth + ($Vx * $Vn2 / $Vn);
-                    $nY = $rHeight + ($Vy * $Vn2 / $Vn);
+                if ($vN != 0) {
+                    $vN2 = $vN + 4 * sin($vN / 30);
+                    $nX = $rWidth + ($vX * $vN2 / $vN);
+                    $nY = $rHeight + ($vY * $vN2 / $vN);
                 } else {
                     $nX = $rWidth;
                     $nY = $rHeight;
@@ -309,7 +304,6 @@ class Captcha
                 imagesetpixel($contents, $x, $y, $pixel);
             }
         }
-
 
         return $contents;
     }
@@ -382,9 +376,7 @@ class Captcha
      */
     protected function renderLine($image, $width, $height, $color = null)
     {
-        if ($color === null) {
-            $color = imagecolorallocate($image, mt_rand(100, 255), mt_rand(100, 255), mt_rand(100, 255));
-        }
+        $color = $color ?: imagecolorallocate($image, mt_rand(100, 255), mt_rand(100, 255), mt_rand(100, 255));
 
         if (mt_rand(0, 1)) {
             // 横向
