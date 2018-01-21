@@ -20,7 +20,12 @@ return array(
      * 验证码字符集
      * @var string
      */
-    'charset' => 'abcdefghijklmnpqrstuvwxyz123456789',
+    'charset' => 'abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789',
+    /**
+     * 是否开启严格模式(区分大小写)
+     * @var bool
+     */
+    'strict' => false,
     /**
      * 默认验证码宽度
      * @var int
