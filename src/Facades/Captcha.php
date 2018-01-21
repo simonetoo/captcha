@@ -7,10 +7,20 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @method \Vicens\Captcha\Image make()
+ * @method \Vicens\Captcha\Captcha setConfig(array | string $config, mixed $value)
+ * @method string|number|array getConfig(string | null $key)
+ * @method bool test(string $input)
+ * @method bool check(string $input)
+ * @see \Vicens\Captcha\Captcha
+ */
 class Captcha extends Facade
 {
 
-
+    /**
+     * @return string
+     */
     protected static function getFacadeAccessor()
     {
         return 'captcha';

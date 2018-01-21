@@ -82,7 +82,10 @@ class Captcha
         'maxOffset' => 5
     ];
 
-
+    /**
+     * Captcha constructor.
+     * @param array $config
+     */
     public function __construct(array $config = [])
     {
         $this->setConfig($config);
