@@ -3,7 +3,7 @@
 namespace Vicens\Captcha\Facades;
 
 use Illuminate\Support\HtmlString;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Facade;
 
@@ -43,6 +43,6 @@ class Captcha extends Facade
      */
     public static function url()
     {
-        return Route::to(Config::get('captcha.routeName', 'captcha'));
+        return URL::route(Config::get('captcha.routeName', 'captcha'));
     }
 }
