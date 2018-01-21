@@ -19,7 +19,7 @@ class Captcha extends Facade
     /**
      * 生成验证码图片标签
      *
-     * @return string
+     * @return HtmlString
      */
     public static function image()
     {
