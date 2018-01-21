@@ -31,12 +31,6 @@ class CaptchaServiceProvider extends ServiceProvider
         // 注册路由
         $this->loadRoutesFrom(__DIR__ . '/../routes.php');
 
-        // 注册中间件
-        Route::aliasMiddleware(
-            Config::get('captcha.middlewareName', 'captcha'),
-            CaptchaMiddleware::class
-        );
-
         // 注册验证器
         Validator::extend(Config::get('captcha.validationName', 'captcha'), function ($attribute, $value) {
 

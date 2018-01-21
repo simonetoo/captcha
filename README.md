@@ -199,13 +199,13 @@ Captcha::check($input);
 在路由上使用：
 
 ```php
-Route::post('login','LoginController@login')->middleware('captcha');
+Route::post('login','LoginController@login')->middleware(\Vicens\Captcha\Middleware\CaptchaMiddleware::class);
 ```
 
 在控制器中使用：
 ```php
 public function __constructor(){
-   $this->middleware('captcha')->only(['login', 'register']);
+   $this->middleware(\Vicens\Captcha\Middleware\CaptchaMiddleware::class)->only(['login', 'register']);
 }
 ```
 
