@@ -3,9 +3,9 @@
 namespace Vicens\Captcha\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Validator;
 use Vicens\Captcha\Captcha;
-use Symfony\Component\HttpFoundation\Request;
-use Vicens\Captcha\Exceptions\InvalidCaptcha;
+use Illuminate\Http\Request;
 
 class CaptchaMiddleware
 {
@@ -25,49 +25,15 @@ class CaptchaMiddleware
      * @param Request $request
      * @param Closure $next
      * @return mixed
-     * @throws InvalidCaptcha
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function handle(Request $request, Closure $next)
     {
 
-        if (!$this->check($this->getCaptcha($request))) {
-
-            $this->throwInvalidException();
-        }
+        Validator::validate($request->only('captcha'), [
+            'captcha' => 'captcha'
+        ]);
 
         return $next($request);
-    }
-
-    /**
-     * 抛出验证码错误的异常
-     *
-     * @throws InvalidCaptcha
-     */
-    protected function throwInvalidException()
-    {
-        // 验证码错误
-        throw new InvalidCaptcha();
-    }
-
-    /**
-     * 验证
-     *
-     * @param string $input
-     * @return bool
-     */
-    protected function check($input)
-    {
-        return $this->captcha->check($input);
-    }
-
-    /**
-     * 返回用户输入的验证码
-     *
-     * @param Request $request
-     * @return string
-     */
-    protected function getCaptcha(Request $request)
-    {
-        return $request->get('captcha');
     }
 }
