@@ -3,9 +3,9 @@
 namespace Vicens\Captcha\Exceptions;
 
 use Throwable;
-use \Exception;
+use \InvalidArgumentException;
 
-class InvalidCaptcha extends Exception
+class InvalidCaptcha extends InvalidArgumentException
 {
 
     public function __construct($message = 'Invalid Captcha!', $code = 0, Throwable $previous = null)
