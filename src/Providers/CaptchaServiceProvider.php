@@ -4,11 +4,9 @@ namespace Vicens\Captcha\Providers;
 
 use Vicens\Captcha\Captcha;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
-use Vicens\Captcha\Middleware\CaptchaMiddleware;
 
 class CaptchaServiceProvider extends ServiceProvider
 {
@@ -45,10 +43,10 @@ class CaptchaServiceProvider extends ServiceProvider
     public function register()
     {
 
-        //合并配置项
+        // 合并配置项
         $this->mergeConfigFrom(__DIR__ . '/../config.php', 'captcha');
 
-        //注册服务
+        // 注册服务
         $this->app->singleton('captcha', function () {
 
             $config = Config::get('captcha', array());
