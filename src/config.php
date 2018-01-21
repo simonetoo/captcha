@@ -7,10 +7,10 @@ return array(
      */
     'debug' => null,
     /**
-     * 验证器名
+     * 中间件名
      * @var string
      */
-    'validationName' => 'captcha',
+    'middleware' => 'web',
     /**
      * 默认验证码长度
      * @var int

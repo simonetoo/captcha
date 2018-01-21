@@ -54,6 +54,7 @@ php artisan vendor:publish --provider=\Vicens\Captcha\Providers\CaptchaServicePr
 ```
 
 ```php
+
 return array(
     /**
      * 调试模式(不验证验证码的正确性), 设置为null时, 取值为app.debug
@@ -61,10 +62,10 @@ return array(
      */
     'debug' => null,
     /**
-     * 验证器名
+     * 中间件名
      * @var string
      */
-    'validationName' => 'captcha',
+    'middleware' => 'web',
     /**
      * 默认验证码长度
      * @var int
