@@ -110,6 +110,7 @@ class Captcha
                 $this->config[$key] = $value;
             }
         }
+
         return $this;
     }
 

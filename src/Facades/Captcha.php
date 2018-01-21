@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method \Vicens\Captcha\Image make()
- * @method \Vicens\Captcha\Captcha setConfig(array | string $config, mixed $value)
- * @method string|number|array getConfig(string | null $key)
- * @method bool test(string $input)
- * @method bool check(string $input)
+ * @method static \Vicens\Captcha\Image make()
+ * @method static \Vicens\Captcha\Captcha setConfig(array | string $config, mixed $value)
+ * @method static string|number|array getConfig(string | null $key)
+ * @method static bool test(string $input)
+ * @method static bool check(string $input)
  * @see \Vicens\Captcha\Captcha
  */
 class Captcha extends Facade
