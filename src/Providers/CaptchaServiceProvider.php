@@ -30,7 +30,7 @@ class CaptchaServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes.php');
 
         // 注册验证器
-        Validator::extend(Config::get('captcha.validationName', 'captcha'), function ($attribute, $value) {
+        Validator::extend('captcha', function ($attribute, $value) {
 
             return $this->app['captcha']->check($value);
         });
