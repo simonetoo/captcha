@@ -85,7 +85,6 @@ class Captcha
 
     public function __construct(array $config = [])
     {
-
         $this->setConfig($config);
     }
 

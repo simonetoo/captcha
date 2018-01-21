@@ -1,8 +1,4 @@
 <?php
-/**
- * @description 验证码图片类
- * @author vicens <vicens.shi@qq.com>
- */
 
 namespace Vicens\Captcha;
 

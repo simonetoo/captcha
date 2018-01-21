@@ -45,27 +45,6 @@ composer require vicens/captcha
 ]
 ```
 
-### 注册路由、验证器和路由中间件
-
-如果你希望使用`Captcha`的默认路由，你需要在`routes/web.php`或者`AppServiceProvider`的`boot`方法中调用`Captcha::routes`方法：
-
-```php
-\Vicens\Captcha\Facades\Captcha::routes($path = '/captcha');
-```
-`Captcha`提供了一个有用的表单验证器，你可以在`AppServiceProvider`的`boot`方法中注册验证器：
-
-```php
-\Vicens\Captcha\Facades\Captcha::validations();
-```
-
-`Captcha`还提供了一个路由中间件，你可以在`app/Http/Kernel.php`的`$routeMiddleware`数组中注册它：
-```php
-protected $routeMiddleware = [
-       // Other middlewares
-       'captcha' => \Vicens\Captcha\Middleware\CaptchaValidate::class
-    ];
-```
-
 ## 配置
 
 如果你想使用自己的配置,你可以执行以下命令发布配置文件`config/captcha.php`：
@@ -76,6 +55,31 @@ php artisan vendor:publish --provider=\Vicens\Captcha\Providers\CaptchaServicePr
 
 ```php
 return array(
+    /**
+     * 调试模式(不验证验证码的正确性), 设置为null时, 取值为app.debug
+     * @var bool|null
+     */
+    'debug' => null,
+    /**
+     * 路由
+     * @var string
+     */
+    'route' => '/captcha',
+    /**
+     * 路由别名
+     * @var string
+     */
+    'routeName' => 'captcha',
+    /**
+     * 中间件名
+     * @var string
+     */
+    'middlewareName' => 'captcha',
+    /**
+     * 验证器名
+     * @var string
+     */
+    'validationName' => 'captcha',
     /**
      * 默认验证码长度
      * @var int
@@ -100,17 +104,17 @@ return array(
      * 指定文字颜色
      * @var string
      */
-    // 'textColor' => null,
+    'textColor' => null,
     /**
      * 文字字体文件
      * @var string
      */
-    // 'textFont' => null,
+    'textFont' => null,
     /**
      * 指定图片背景色
      * @var string
      */
-    // 'backgroundColor' => null,
+    'backgroundColor' => null,
     /**
      * 开启失真模式
      * @var bool
@@ -120,12 +124,12 @@ return array(
      * 最大前景线条数
      * @var int
      */
-    // 'maxFrontLines' => null,
+    'maxFrontLines' => null,
     /**
      * 最大背景线条数
      * @val int
      */
-    // 'maxBehindLines' => null,
+    'maxBehindLines' => null,
     /**
      * 文字最大角度
      * @var int
@@ -201,7 +205,7 @@ Route::post('login','LoginController@login')->middleware('captcha');
 在控制器中使用：
 ```php
 public function __constructor(){
-   $this->middleware('captcha');
+   $this->middleware('captcha')->only(['login', 'register']);
 }
 ```
 
@@ -211,7 +215,7 @@ public function __constructor(){
 
 ```php
 $this->validation([
-   'code'=>'captcha'
+   'code' => 'captcha'
 ]);
 ```
 在`Request`中使用：
@@ -226,22 +230,14 @@ public function rules()
 
 #### 外观方法
 
-返回URL：
+返回验证码URL：
 ```php
 Captcha::url();
 Captcha::src();
 ```
-返回`img`标签：
+返回验证码`img`标签：
 ```php
 Captcha::image();
-```
-注册路由：
-```php
-Captcha::routes();
-```
-注册表单验证器：
-```php
-Captcha::validations();
 ```
 
 ## 开源协议

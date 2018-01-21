@@ -1,12 +1,9 @@
 <?php
-/**
- * @description 验证码配置
- * @author vicens <vicens.shi@qq.com>
- */
 
 return array(
     /**
-     * 是否开启调试模式(不验证验证码的正确性), null为程序开启调试模式时开启
+     * 调试模式(不验证验证码的正确性), 设置为null时, 取值为app.debug
+     * @var bool|null
      */
     'debug' => null,
     /**
@@ -16,14 +13,17 @@ return array(
     'route' => '/captcha',
     /**
      * 路由别名
+     * @var string
      */
     'routeName' => 'captcha',
     /**
      * 中间件名
+     * @var string
      */
     'middlewareName' => 'captcha',
     /**
      * 验证器名
+     * @var string
      */
     'validationName' => 'captcha',
     /**

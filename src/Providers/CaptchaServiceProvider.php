@@ -27,6 +27,22 @@ class CaptchaServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config.php' => config_path('captcha.php')
         ], 'config');
+
+        // 注册路由
+        $this->loadRoutesFrom(__DIR__ . '/../routes.php');
+
+        // 注册中间件
+        Route::aliasMiddleware(
+            Config::get('captcha.middlewareName', 'captcha'),
+            CaptchaMiddleware::class
+        );
+
+        // 注册验证器
+        Validator::extend(Config::get('captcha.validationName', 'captcha'), function ($attribute, $value) {
+
+            return $this->app['captcha']->check($value);
+        });
+
     }
 
     /**
@@ -38,36 +54,24 @@ class CaptchaServiceProvider extends ServiceProvider
         //合并配置项
         $this->mergeConfigFrom(__DIR__ . '/../config.php', 'captcha');
 
-        $config = Config::get('captcha', array());
-
-        if (Arr::get($config, 'debug') === null) {
-            // 自动开启调试模型
-            Arr::set($config, 'debug', Config::get('app.debug', false));
-        }
-
         //注册服务
-        $this->app->singleton('captcha', function () use ($config) {
+        $this->app->singleton('captcha', function () {
+
+            $config = Config::get('captcha', array());
+
+            if (Arr::get($config, 'debug') === null) {
+                // 自动开启调试模型
+                Arr::set($config, 'debug', Config::get('app.debug', false));
+            }
+
             return new Captcha($config);
         });
-
-        // 注册中间件
-        Route::aliasMiddleware(
-            Arr::get($config, 'middlewareName', 'captcha'),
-            CaptchaMiddleware::class
-        );
-
-        // 注册验证器
-        Validator::extend(Arr::get($config, 'validationName', 'captcha'), function ($attribute, $value) {
-
-            return $this->app['captcha']->check($value);
-        });
-
     }
 
     /**
      * provides
      *
-     * @return array
+     * @return string[]
      */
     public function provides()
     {
