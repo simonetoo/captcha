@@ -215,10 +215,10 @@ class Captcha
         $backgroundColor = $this->getConfig('backgroundColor');
 
 
-        //随机取一个字体
+        // 随机取一个字体
         $font = $this->getTextFont();
 
-        //根据宽高创建一个背景画布
+        // 根据宽高创建一个背景画布
         $image = imagecreatetruecolor($width, $height);
 
         if ($backgroundColor === null) {
@@ -227,16 +227,16 @@ class Captcha
             $color = $backgroundColor;
             $backgroundColor = imagecolorallocate($image, $color[0], $color[1], $color[2]);
         }
-        //填充背景色
+        // 填充背景色
         imagefill($image, 0, 0, $backgroundColor);
 
-        //绘制背景干扰线
+        // 绘制背景干扰线
         $this->drawLines($image, $this->getConfig('maxBehindLines'));
 
-        //写入验证码文字
+        // 写入验证码文字
         $color = $this->renderText($image, $code, $font);
 
-        //绘制前景干扰线
+        // 绘制前景干扰线
         $this->drawLines($image, $this->getConfig('maxFrontLines'), $color);
 
 
@@ -247,19 +247,19 @@ class Captcha
 
         //如果不指定字体颜色和背景颜色,则使用图像过滤器修饰
         if (function_exists('imagefilter') && is_null($backgroundColor) && is_null($this->getConfig('textColor'))) {
-            //颜色翻转 - 1/2几率
+            // 颜色翻转 - 1/2几率
             if (mt_rand(0, 1) == 0) {
                 imagefilter($image, IMG_FILTER_NEGATE);
             }
-            //用边缘检测来突出图像的边缘 - 1/11几率
+            // 用边缘检测来突出图像的边缘 - 1/11几率
             if (mt_rand(0, 10) == 0) {
                 imagefilter($image, IMG_FILTER_EDGEDETECT);
             }
-            //改变图像的对比度
+            // 改变图像的对比度
             imagefilter($image, IMG_FILTER_CONTRAST, mt_rand(-50, 10));
 
             if (mt_rand(0, 5) == 0) {
-                //用高斯算法和指定颜色模糊图像
+                // 用高斯算法和指定颜色模糊图像
                 imagefilter($image, IMG_FILTER_COLORIZE, mt_rand(-80, 50), mt_rand(-80, 50), mt_rand(-80, 50));
             }
         }
@@ -321,11 +321,11 @@ class Captcha
      */
     protected function getTextFont()
     {
-        //指定字体
+        // 指定字体
         if ($this->getConfig('textFont') && file_exists($this->getConfig('textFont'))) {
             return $this->getConfig('textFont');
         }
-        //随机字体
+        // 随机字体
         return __DIR__ . '/../fonts/' . mt_rand(0, 5) . '.ttf';
     }
 
@@ -386,12 +386,14 @@ class Captcha
             $color = imagecolorallocate($image, mt_rand(100, 255), mt_rand(100, 255), mt_rand(100, 255));
         }
 
-        if (mt_rand(0, 1)) { // 横向
+        if (mt_rand(0, 1)) {
+            // 横向
             $xA = mt_rand(0, $width / 2);
             $yA = mt_rand(0, $height);
             $xB = mt_rand($width / 2, $width);
             $yB = mt_rand(0, $height);
-        } else { // 纵向
+        } else {
+            // 纵向
             $xA = mt_rand(0, $width);
             $yA = mt_rand(0, $height / 2);
             $xB = mt_rand(0, $width);
