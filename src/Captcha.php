@@ -279,34 +279,34 @@ class Captcha
     {
         //创建失真
         $contents = imagecreatetruecolor($width, $height);
-        $X = mt_rand(0, $width);
-        $Y = mt_rand(0, $height);
+        $rWidth = mt_rand(0, $width);
+        $rHeight = mt_rand(0, $height);
         $phase = mt_rand(0, 10);
         $scale = 1.1 + mt_rand(0, 10000) / 30000;
 
         for ($x = 0; $x < $width; $x++) {
             for ($y = 0; $y < $height; $y++) {
-                $Vx = $x - $X;
-                $Vy = $y - $Y;
+                $Vx = $x - $rWidth;
+                $Vy = $y - $rHeight;
                 $Vn = sqrt($Vx * $Vx + $Vy * $Vy);
 
                 if ($Vn != 0) {
                     $Vn2 = $Vn + 4 * sin($Vn / 30);
-                    $nX = $X + ($Vx * $Vn2 / $Vn);
-                    $nY = $Y + ($Vy * $Vn2 / $Vn);
+                    $nX = $rWidth + ($Vx * $Vn2 / $Vn);
+                    $nY = $rHeight + ($Vy * $Vn2 / $Vn);
                 } else {
-                    $nX = $X;
-                    $nY = $Y;
+                    $nX = $rWidth;
+                    $nY = $rHeight;
                 }
                 $nY = $nY + $scale * sin($phase + $nX * 0.2);
 
-                $p = $this->getColor($image, round($nX), round($nY), $backgroundColor);
+                $pixel = $this->getColor($image, round($nX), round($nY), $backgroundColor);
 
-                if ($p == 0) {
-                    $p = $backgroundColor;
+                if ($pixel == 0) {
+                    $pixel = $backgroundColor;
                 }
 
-                imagesetpixel($contents, $x, $y, $p);
+                imagesetpixel($contents, $x, $y, $pixel);
             }
         }
 
@@ -387,18 +387,18 @@ class Captcha
         }
 
         if (mt_rand(0, 1)) { // 横向
-            $Xa = mt_rand(0, $width / 2);
-            $Ya = mt_rand(0, $height);
-            $Xb = mt_rand($width / 2, $width);
-            $Yb = mt_rand(0, $height);
+            $xA = mt_rand(0, $width / 2);
+            $yA = mt_rand(0, $height);
+            $xB = mt_rand($width / 2, $width);
+            $yB = mt_rand(0, $height);
         } else { // 纵向
-            $Xa = mt_rand(0, $width);
-            $Ya = mt_rand(0, $height / 2);
-            $Xb = mt_rand(0, $width);
-            $Yb = mt_rand($height / 2, $height);
+            $xA = mt_rand(0, $width);
+            $yA = mt_rand(0, $height / 2);
+            $xB = mt_rand(0, $width);
+            $yB = mt_rand($height / 2, $height);
         }
         imagesetthickness($image, mt_rand(1, 3));
-        imageline($image, $Xa, $Ya, $Xb, $Yb, $color);
+        imageline($image, $xA, $yA, $xB, $yB, $color);
     }
 
     /**
@@ -435,20 +435,20 @@ class Captcha
      * 获取颜色
      *
      * @param resource $image
-     * @param int $x
-     * @param int $y
+     * @param int $width
+     * @param int $height
      * @param int $background
      * @return int
      */
-    protected function getColor($image, $x, $y, $background)
+    protected function getColor($image, $width, $height, $background)
     {
-        $L = imagesx($image);
-        $H = imagesy($image);
-        if ($x < 0 || $x >= $L || $y < 0 || $y >= $H) {
+        $sWidth = imagesx($image);
+        $sHeight = imagesy($image);
+        if ($width < 0 || $width >= $sWidth || $height < 0 || $height >= $sHeight) {
             return $background;
         }
 
-        return imagecolorat($image, $x, $y);
+        return imagecolorat($image, $width, $height);
     }
 
     /**
