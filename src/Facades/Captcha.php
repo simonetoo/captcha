@@ -43,6 +43,6 @@ class Captcha extends Facade
      */
     public static function url()
     {
-        return URL::route(Config::get('captcha.routeName', 'captcha'));
+        return URL::to(Config::get('captcha.route', 'captcha'));
     }
 }

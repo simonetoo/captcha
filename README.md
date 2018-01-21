@@ -61,21 +61,6 @@ return array(
      */
     'debug' => null,
     /**
-     * 路由
-     * @var string
-     */
-    'route' => '/captcha',
-    /**
-     * 路由别名
-     * @var string
-     */
-    'routeName' => 'captcha',
-    /**
-     * 中间件名
-     * @var string
-     */
-    'middlewareName' => 'captcha',
-    /**
      * 验证器名
      * @var string
      */
