@@ -1,14 +1,11 @@
 <?php
-/**
- * @description laravel 门面
- * @author vicens <vicens.shi@qq.com>
- */
 
 namespace Vicens\Captcha\Facades;
 
-use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\HtmlString;
-
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Facade;
 
 class Captcha extends Facade
 {
@@ -40,41 +37,12 @@ class Captcha extends Facade
     }
 
     /**
-     * 生成验证码路由
-     *
-     * @param string $path
-     */
-    public static function routes($path = '/captcha')
-    {
-
-        app('router')->get($path, function () {
-
-            return app('captcha')->make()->response();
-
-        })->name('captcha');
-    }
-
-    /**
      * 返回验证码的URL
      *
      * @return string
      */
     public static function url()
     {
-        return route('captcha');
+        return Route::to(Config::get('captcha.routeName', 'captcha'));
     }
-
-    /**
-     * 注册表单验证器
-     */
-    public static function validations()
-    {
-
-        app('validator')->extend('captcha', function ($attribute, $value) {
-
-            return app('captcha')->check($value);
-        });
-
-    }
-
 }

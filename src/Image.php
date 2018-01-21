@@ -8,7 +8,6 @@ namespace Vicens\Captcha;
 
 use Symfony\Component\HttpFoundation\Response;
 
-
 class Image
 {
 

@@ -1,14 +1,9 @@
 <?php
-/**
- * @description 验证码异常类
- * @author vicens <vicens.shi@qq.com>
- */
-
 
 namespace Vicens\Captcha\Exceptions;
 
-use \Exception;
 use Throwable;
+use \Exception;
 
 class InvalidCaptcha extends Exception
 {

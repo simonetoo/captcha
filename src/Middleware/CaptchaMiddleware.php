@@ -1,18 +1,13 @@
 <?php
-/**
- * @description HTTP中间件
- * @author vicens <vicens.shi@qq.com>
- */
 
 namespace Vicens\Captcha\Middleware;
 
-
-use Illuminate\Http\Request;
-use Vicens\Captcha\Captcha;
 use Closure;
+use Vicens\Captcha\Captcha;
+use Symfony\Component\HttpFoundation\Request;
 use Vicens\Captcha\Exceptions\InvalidCaptcha;
 
-class CaptchaValidate
+class CaptchaMiddleware
 {
 
     /**
@@ -30,15 +25,14 @@ class CaptchaValidate
      * @param Request $request
      * @param Closure $next
      * @return mixed
+     * @throws InvalidCaptcha
      */
     public function handle(Request $request, Closure $next)
     {
 
-        // 验证
         if (!$this->check($this->getCaptcha($request))) {
 
             $this->throwInvalidException();
-
         }
 
         return $next($request);

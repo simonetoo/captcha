@@ -6,6 +6,27 @@
 
 return array(
     /**
+     * 是否开启调试模式(不验证验证码的正确性), null为程序开启调试模式时开启
+     */
+    'debug' => null,
+    /**
+     * 路由
+     * @var string
+     */
+    'route' => '/captcha',
+    /**
+     * 路由别名
+     */
+    'routeName' => 'captcha',
+    /**
+     * 中间件名
+     */
+    'middlewareName' => 'captcha',
+    /**
+     * 验证器名
+     */
+    'validationName' => 'captcha',
+    /**
      * 默认验证码长度
      * @var int
      */

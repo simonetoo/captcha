@@ -1,42 +1,25 @@
 <?php
-/**
- * @description 验证码生成类
- * @author vicens <vicens.shi@qq.com>
- */
 
 namespace Vicens\Captcha;
 
-use Symfony\Component\HttpFoundation\Session\Session;
+use Illuminate\Support\Facades\Session;
 
-/**
- * Class Captcha
- * @method Captcha length(int $length)  设置验证码字符长度
- * @method Captcha charset(string $charset) 设置验证码的字符集
- * @method Captcha width(int $width) 设置验证码宽度
- * @method Captcha height(int $height) 设置验证码高度
- * @method Captcha textColor(string $color) 设置文本颜色
- * @method Captcha textFont(string $font) 设置文本字体
- * @method Captcha backgroundColor(string $color) 设置背景颜色
- * @method Captcha distortion(boolean $distortion) 是否开启失真模式
- * @method Captcha maxFrontLines(int $maxFrontLines) 设置最大前景线条数
- * @method Captcha minFrontLines(int $minFrontLines) 设置最小前景线条数
- * @method Captcha maxAngle(int $maxAngle) 文字最大倾斜角度
- * @method Captcha maxOffset(int $maxOffset) 文字最大偏移
- *
- * @package Vicens\Captcha
- */
 class Captcha
 {
     /**
      * 存储在session中的key
      */
-    const NAME = 'captcha';
+    const SESSION_NAME = '_captcha';
 
     /**
      * 验证码配置
      * @var array
      */
     protected $config = [
+        /**
+         * 调试模型
+         */
+        'debug' => false,
         /**
          * 默认验证码长度
          * @var int
@@ -99,17 +82,9 @@ class Captcha
         'maxOffset' => 5
     ];
 
-    /**
-     * 存储驱动
-     * @var Session
-     */
-    protected $store;
-
 
     public function __construct(array $config = [])
     {
-
-        $this->store = new Session();
 
         $this->setConfig($config);
     }
@@ -167,7 +142,7 @@ class Captcha
             throw new \RuntimeException('Bcrypt hashing not supported.');
         }
 
-        $this->store->set(self::NAME, $hash);
+        Session::put(self::SESSION_NAME, $hash);
 
         return new Image($this->build($code));
     }
@@ -180,13 +155,14 @@ class Captcha
      */
     public function test($input)
     {
-
-        if (!($this->store->has(self::NAME) && $input)) {
+        if ($this->config['debug']) {
+            return true;
+        } elseif (!(Session::has(self::SESSION_NAME) && $input)) {
             return false;
         }
 
         //返回验证结果
-        return password_verify(strtolower($input), $this->store->get(self::NAME));
+        return password_verify(strtolower($input), Session::get(self::SESSION_NAME));
     }
 
     /**
@@ -199,7 +175,7 @@ class Captcha
     {
         $result = $this->test($input);
 
-        $this->store->remove(self::NAME);
+        Session::forget(self::SESSION_NAME);
 
         return $result;
     }
