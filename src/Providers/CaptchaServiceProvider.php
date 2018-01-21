@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class CaptchaServiceProvider extends ServiceProvider
 {
-    /**
-     * 按需加载
-     * @var bool
-     */
-    protected $defer = true;
 
     /**
      * boot

@@ -171,12 +171,12 @@ class Captcha
         $code = Session::get(self::SESSION_NAME);
 
         if ($this->config['strict']) {
-            // 开启严格模式, 区分大小写
-            return password_verify($input, $code);
+            // 开启严格模式
+            $input = strtoupper($input);
         }
 
         //返回验证结果
-        return password_verify(strtolower($input), strtolower($code));
+        return password_verify($input, $code);
     }
 
     /**
@@ -208,7 +208,11 @@ class Captcha
             $code .= $characters[rand(0, count($characters) - 1)];
         }
 
-        return $code;
+        if ($this->config['strict']) {
+            return $code;
+        }
+
+        return strtoupper($code);
     }
 
     /**
