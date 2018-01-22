@@ -172,11 +172,11 @@ class Captcha
 
         if ($this->config['strict']) {
             // 开启严格模式
-            password_verify(strtoupper($input), $code);
+            password_verify($input, $code);
         }
 
         //返回验证结果
-        return password_verify($input, $code);
+        return password_verify(strtoupper($input), $code);
     }
 
     /**
