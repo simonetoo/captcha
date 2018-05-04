@@ -366,7 +366,7 @@ class Captcha
         $x = ($this->getConfig('width') - $textWidth) / 2;
         $y = ($this->getConfig('height') - $textHeight) / 2 + $size;
 
-        if (!count($this->getConfig('textColor'))) {
+        if (!$this->getConfig('textColor')) {
             $textColor = array(mt_rand(0, 150), mt_rand(0, 150), mt_rand(0, 150));
         } else {
             $textColor = $this->getConfig('textColor');
