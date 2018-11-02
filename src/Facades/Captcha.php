@@ -37,6 +37,23 @@ class Captcha extends Facade
     }
 
     /**
+     * 生成点击后刷新验证码的图片标签
+     *
+     * @return HtmlString
+     */
+    public static function clickableImage()
+    {
+        $src = self::src();
+
+        return new HtmlString('<img 
+                src="' . $src . '" 
+                alt="captcha" 
+                onclick="this.src=\'' . $src . '?\' + Math.random()" 
+                style="cursor:pointer"
+            />');
+    }
+
+    /**
      * 获取图片验证码的URL
      *
      * @return string
