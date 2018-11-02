@@ -231,6 +231,10 @@ Captcha::src();
 Captcha::image();
 ```
 
+返回可点击切换验证码的`img`标签：
+```php
+Captcha::clickableImage();
+```
 ## 开源协议
 
 [MIT license](http://opensource.org/licenses/MIT).
