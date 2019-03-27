@@ -2,14 +2,14 @@
 
 namespace Vicens\Captcha\Controller;
 
-use Illuminate\Routing\Controller;
 use Vicens\Captcha\Facades\Captcha;
 
-class CaptchaController extends Controller
+class CaptchaController
 {
 
     /**
      * 生成二维码图片
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function image()

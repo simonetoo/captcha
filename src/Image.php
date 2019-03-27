@@ -67,9 +67,7 @@ class Image
      */
     public function response()
     {
-
         return Response::create($this->getContent(), 200, array('Content-type' => 'image/jpeg'));
-
     }
 
     /**
@@ -79,7 +77,6 @@ class Image
      */
     public function getImage()
     {
-
         return $this->image;
     }
 
