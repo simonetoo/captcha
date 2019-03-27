@@ -3,37 +3,75 @@
 namespace Vicens\Captcha\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Validator;
-use Vicens\Captcha\Captcha;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Validation\Factory;
 
 class CaptchaMiddleware
 {
 
     /**
-     * @var Captcha
+     * @var Factory
      */
-    protected $captcha;
+    protected $validator;
 
-
-    public function __construct(Captcha $captcha)
+    /**
+     * CaptchaMiddleware constructor.
+     *
+     * @param Factory $validator
+     */
+    public function __construct(Factory $validator)
     {
-        $this->captcha = $captcha;
+        $this->validator = $validator;
     }
 
     /**
-     * @param Request $request
+     * @param $request
      * @param Closure $next
+     * @param string $captchaKey
      * @return mixed
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next, $captchaKey = 'captcha')
     {
-
-        Validator::validate($request->only('captcha'), [
-            'captcha' => 'captcha'
-        ]);
+        $this->validate($request, $captchaKey);
 
         return $next($request);
+    }
+
+    /**
+     * 验证
+     *
+     * @param $request
+     * @param $captchaKey
+     */
+    protected function validate($request, $captchaKey)
+    {
+        $this->validator->make(
+            $request->only($captchaKey),
+            $this->rules($captchaKey),
+            $this->message($captchaKey)
+        )->validate();
+    }
+
+    /**
+     * 验证规则
+     *
+     * @param string $captchaKey
+     * @return array
+     */
+    protected function rules($captchaKey)
+    {
+        return [
+            $captchaKey => 'required|captcha'
+        ];
+    }
+
+    /**
+     * 验证的错误消息
+     *
+     * @param string $captchaKey
+     * @return array
+     */
+    protected function message($captchaKey)
+    {
+        return [];
     }
 }
